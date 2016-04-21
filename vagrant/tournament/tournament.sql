@@ -7,3 +7,35 @@
 -- these lines here.
 
 
+DROP DATABASE IF EXISTS tournament;
+CREATE DATABASE tournament;
+\c tournament;
+
+CREATE TABLE players
+(
+	player_id	SERIAL PRIMARY KEY,
+	LastName	VARCHAR(255),
+	FirstName	VARCHAR(255)
+);
+
+INSERT INTO players (LastName, FirstName) VALUES
+	('Qazi', 'Rafeh'),
+	('Phuljung', 'Tenzin');
+
+CREATE TABLE matches
+(
+	match_id	SERIAL PRIMARY KEY,
+	rounds		INT,
+	score		NUMERIC
+);
+
+ALTER TABLE matches
+ADD CONSTRAINT match_players FOREIGN KEY (match_id) REFERENCES players(player_id);
+
+INSERT INTO matches (match_id, rounds, score) VALUES
+	(1, 2, 2),
+	(2, 1, 0.5);
+
+SELECT * FROM matches;
+
+\d
