@@ -34,14 +34,23 @@ ADD CONSTRAINT match_players FOREIGN KEY (match_id) REFERENCES players(player_id
 
 INSERT INTO matches (match_id, rounds, score) VALUES
 	(1, 2, 2),
-	(2, 1, 0.5);
+	(2, 3, 2.5);
 
 \d
 
+SELECT * FROM matches;
+
+CREATE VIEW top_score AS
+SELECT MAX(score) FROM matches;
+
+-- Return the player with the max score.
 SELECT players.FirstName
 FROM players
 INNER JOIN matches
 ON players.player_id = matches.match_id
-WHERE matches.score = 2;
+WHERE matches.score IN 
+		(SELECT MAX(score)
+			FROM matches as top_score);	
 
-SELECT * FROM matches;
+SELECT MAX(score)
+FROM matches;
