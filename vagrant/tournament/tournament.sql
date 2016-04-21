@@ -13,7 +13,7 @@ CREATE DATABASE tournament;
 
 CREATE TABLE players
 (
-	player_id	SERIAL PRIMARY KEY,
+	player_id	SERIAL PRIMARY KEY NOT NULL,
 	LastName	VARCHAR(255),
 	FirstName	VARCHAR(255)
 );
@@ -36,6 +36,12 @@ INSERT INTO matches (match_id, rounds, score) VALUES
 	(1, 2, 2),
 	(2, 1, 0.5);
 
-SELECT * FROM matches;
-
 \d
+
+SELECT players.FirstName
+FROM players
+INNER JOIN matches
+ON players.player_id = matches.match_id
+WHERE matches.score = 2;
+
+SELECT * FROM matches;
