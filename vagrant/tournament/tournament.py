@@ -53,6 +53,8 @@ def registerPlayer(name):
     conn = connect()
     c = conn.cursor()
     c.execute("INSERT INTO players (full_name) VALUES (%s)", (name,))
+    # c.execute("UPDATE matches INNER JOIN players\
+               # SET matches.matches_id = players.player_id")
     conn.commit()
     conn.close()
 
@@ -81,8 +83,11 @@ def playerStandings():
         ON players.player_id = matches.match_id\
         ORDER BY matches.wins")
     results = c.fetchall()
-
-    return results
+    lists = [list(tuple_) for tuple_ in results]
+    for index, list_ in enumerate(lists):
+        lists[index] = [0 if value == None else value for value in list_]
+    tuples = [tuple(list_) for list_ in lists]
+    return tuples
 
 
 
@@ -96,6 +101,24 @@ def reportMatch(winner, loser):
     """
     conn = connect()
     c = conn.cursor()
+    # c.execute("INSERT INTO matches VALUES (%s)\
+              # IF (%s) NOT IN match_id", (winner, winner))
+
+    # c.execute("INSERT INTO matches VALUES (%s)\
+               # IF (%s) NOT IN match_id", (loser, loser))
+
+    c.execute("IF NOT EXISTS (SELECT match_id from matches\
+               where match_id = (%s)\
+               BEGIN INSERT matches(match_id)\
+               VALUES (%s)\
+               END;", (winner, winner))
+
+    c.execute("IF NOT EXISTS (SELECT match_id from matches\
+               where match_id = (%s)\
+               BEGIN INSERT matches(match_id)\
+               VALUES (%s)\
+               END;", (loser, loser))
+
     c.execute("UPDATE matches SET wins = wins + 1, rounds = rounds + 1\
                WHERE match_id = (%s)", (winner,))
 
@@ -125,5 +148,5 @@ if __name__ == '__main__':
     # deleteMatches()
     # deletePlayers()
     # registerPlayer("Nick")
-    # reportMatch(5, 1)
     print(playerStandings())
+    # reportMatch(2, 1)
