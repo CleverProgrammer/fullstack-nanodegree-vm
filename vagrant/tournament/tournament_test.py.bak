@@ -22,25 +22,25 @@ def testCount():
             "countPlayers should return numeric zero, not string '0'.")
     if c != 0:
         raise ValueError("After deletion, countPlayers should return zero.")
-    print("1. countPlayers() returns 0 after initial deletePlayers() execution.")
+    print "1. countPlayers() returns 0 after initial deletePlayers() execution."
     registerPlayer("Chandra Nalaar")
     c = countPlayers()
     if c != 1:
         raise ValueError(
             "After one player registers, countPlayers() should be 1. Got {c}".format(c=c))
-    print("2. countPlayers() returns 1 after one player is registered.")
+    print "2. countPlayers() returns 1 after one player is registered."
     registerPlayer("Jace Beleren")
     c = countPlayers()
     if c != 2:
         raise ValueError(
             "After two players register, countPlayers() should be 2. Got {c}".format(c=c))
-    print("3. countPlayers() returns 2 after two players are registered.")
+    print "3. countPlayers() returns 2 after two players are registered."
     deletePlayers()
     c = countPlayers()
     if c != 0:
         raise ValueError(
             "After deletion, countPlayers should return zero.")
-    print("4. countPlayers() returns zero after registered players are deleted.\n5. Player records successfully deleted.")
+    print "4. countPlayers() returns zero after registered players are deleted.\n5. Player records successfully deleted."
 
 def testStandingsBeforeMatches():
     """
@@ -66,7 +66,7 @@ def testStandingsBeforeMatches():
     if set([name1, name2]) != set(["Melpomene Murray", "Randy Schwartz"]):
         raise ValueError("Registered players' names should appear in standings, "
                          "even if they have no matches played.")
-    print("6. Newly registered players appear in the standings with no matches.")
+    print "6. Newly registered players appear in the standings with no matches."
 
 def testReportMatches():
     """
@@ -91,7 +91,7 @@ def testReportMatches():
             raise ValueError("Each match winner should have one win recorded.")
         elif i in (id2, id4) and w != 0:
             raise ValueError("Each match loser should have zero wins recorded.")
-    print("7. After a match, players have updated standings.")
+    print "7. After a match, players have updated standings."
     deleteMatches()
     standings = playerStandings()
     if len(standings) != 4:
@@ -101,7 +101,7 @@ def testReportMatches():
             raise ValueError("After deleting matches, players should have zero matches recorded.")
         if w != 0:
             raise ValueError("After deleting matches, players should have zero wins recorded.")
-    print("8. After match deletion, player standings are properly reset.\n9. Matches are properly deleted.")
+    print "8. After match deletion, player standings are properly reset.\n9. Matches are properly deleted."
 
 def testPairings():
     """
@@ -144,7 +144,7 @@ def testPairings():
         if pair not in possible_pairs:
             raise ValueError(
                 "After one match, players with one win should be paired.")
-    print("10. After one match, players with one win are properly paired.")
+    print "10. After one match, players with one win are properly paired."
 
 
 if __name__ == '__main__':
@@ -152,4 +152,4 @@ if __name__ == '__main__':
     testStandingsBeforeMatches()
     testReportMatches()
     testPairings()
-    print("Success!  All tests pass!")
+    print "Success!  All tests pass!"

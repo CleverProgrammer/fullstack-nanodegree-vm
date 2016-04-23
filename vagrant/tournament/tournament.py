@@ -13,14 +13,32 @@ def connect():
 
 def deleteMatches():
     """Remove all the match records from the database."""
+    conn = connect()
+    c = conn.cursor()
+    c.execute("DELETE FROM matches;")
+    conn.commit()
+    conn.close()
 
 
 def deletePlayers():
     """Remove all the player records from the database."""
+    conn = connect()
+    c = conn.cursor()
+    c.execute("DELETE FROM players;")
+    conn.commit()
+    conn.close()
 
 
 def countPlayers():
     """Returns the number of players currently registered."""
+    conn = connect()
+    c = conn.cursor()
+    c.execute("SELECT COUNT(*) as num FROM players;")
+    results = c.fetchone()[0]
+    conn.close()
+    return results
+
+# countPlayers()
 
 
 def registerPlayer(name):
@@ -32,6 +50,13 @@ def registerPlayer(name):
     Args:
       name: the player's full name (need not be unique).
     """
+    conn = connect()
+    c = conn.cursor()
+    c.execute("INSERT INTO players (full_name) VALUES (%s)", (name,))
+    conn.commit()
+    conn.close()
+
+# registerPlayer("Nick Drane")
 
 
 def playerStandings():
@@ -47,6 +72,19 @@ def playerStandings():
         wins: the number of matches the player has won
         matches: the number of matches the player has played
     """
+    conn = connect()
+    c = conn.cursor()
+    c.execute("SELECT players.player_id, players.full_name,\
+        matches.wins, matches.rounds\
+        FROM players\
+        LEFT OUTER JOIN matches\
+        ON players.player_id = matches.match_id\
+        ORDER BY matches.wins")
+    results = c.fetchall()
+
+    return results
+
+
 
 
 def reportMatch(winner, loser):
@@ -56,8 +94,17 @@ def reportMatch(winner, loser):
       winner:  the id number of the player who won
       loser:  the id number of the player who lost
     """
- 
- 
+    conn = connect()
+    c = conn.cursor()
+    c.execute("UPDATE matches SET wins = wins + 1, rounds = rounds + 1\
+               WHERE match_id = (%s)", (winner,))
+
+    c.execute("UPDATE matches SET losses = losses + 1, rounds = rounds + 1\
+               WHERE match_id = (%s)", (loser,))
+    conn.commit()
+    conn.close()
+
+
 def swissPairings():
     """Returns a list of pairs of players for the next round of a match.
   
@@ -74,4 +121,9 @@ def swissPairings():
         name2: the second player's name
     """
 
-
+if __name__ == '__main__':
+    # deleteMatches()
+    # deletePlayers()
+    # registerPlayer("Nick")
+    # reportMatch(5, 1)
+    print(playerStandings())
