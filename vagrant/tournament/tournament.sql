@@ -22,3 +22,13 @@ CREATE TABLE matches
 	result      	INT NOT NULL,
 	FOREIGN KEY (match_id) REFERENCES players(player_id)
 );
+
+CREATE VIEW standings AS
+SELECT 	players.player_id, 
+	players.full_name, 
+	COUNT(CASE result WHEN 1 THEN 1 END) AS wins,
+	COUNT(matches.match_id) AS rounds
+FROM players
+LEFT OUTER JOIN matches
+ON players.player_id = matches.match_id
+GROUP BY players.player_id;
