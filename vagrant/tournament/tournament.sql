@@ -9,21 +9,16 @@
 
 DROP DATABASE IF EXISTS tournament;
 CREATE DATABASE tournament;
-\c tournament;
 
 CREATE TABLE players
 (
 	player_id	SERIAL PRIMARY KEY NOT NULL,
-	full_name	VARCHAR(255)
+	full_name	VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE matches
 (
-	match_id	SERIAL PRIMARY KEY,
-	rounds		INT,
-	wins		INT,
-	losses		INT
+	match_id	INT NOT NULL,
+	result      	INT NOT NULL,
+	FOREIGN KEY (match_id) REFERENCES players(player_id)
 );
-
-ALTER TABLE matches
-ADD CONSTRAINT match_players FOREIGN KEY (match_id) REFERENCES players(player_id);
