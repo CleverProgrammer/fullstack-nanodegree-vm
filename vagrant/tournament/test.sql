@@ -24,19 +24,21 @@ CREATE TABLE matches
 	FOREIGN KEY (match_id) REFERENCES players(player_id)
 );
 
--- INSERT INTO players (full_name) VALUES
-	-- ('Rafeh Qazi'),
-	-- ('Tenzin Phuljung'),
-	-- ('Chris Angelico');
+INSERT INTO players (full_name) VALUES
+	('Rafeh Qazi'),
+	('Tenzin Phuljung'),
+	('Nick Drane'),
+	('Chris Angelico');
 
 INSERT INTO matches (match_id, result) VALUES
-    (1, 0),
-    (1, 0),
     (1, 1),
     (2, 1),
-    (2, 1),
-    (2, 1),
-    (2, 1);
+    (3, 1),
+    (3, 1),
+    (4, 1),
+    (4, 1),
+    (1, 0),
+    (2, 0);
 
 \d
 
@@ -57,6 +59,9 @@ SELECT * FROM standings;
 
 -- COUNT(match_id WHERE result=1)
 -- COUNT(match_id FILTER WHERE result=1)
+
+select * from standings
+order by wins DESC;
 
 -- | id | full_name | wins | rounds
 

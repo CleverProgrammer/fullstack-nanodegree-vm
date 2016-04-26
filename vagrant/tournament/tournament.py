@@ -3,6 +3,7 @@
 # tournament.py -- implementation of a Swiss-system tournament
 #
 
+from __future__ import print_function
 import psycopg2
 
 
@@ -106,10 +107,16 @@ def swissPairings():
         id2: the second player's unique id
         name2: the second player's name
     """
+    conn = connect()
+    c = conn.cursor()
+    c.execute('select player_id, full_name from standings order by wins;')
+    return [pair1 + pair2 for pair1, pair2 in zip(c, c)]
+
 
 if __name__ == '__main__':
     # deleteMatches()
     # deletePlayers()
     # registerPlayer("Nick")
-    print(playerStandings())
+    # print(playerStandings())
+    print(swissPairings())
     # reportMatch(2, 1)
