@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-# 
+# Author: Rafeh Qazi
 # tournament.py -- implementation of a Swiss-system tournament
-#
 
 from __future__ import print_function
 import psycopg2
@@ -39,8 +38,6 @@ def countPlayers():
     conn.close()
     return results
 
-# countPlayers()
-
 
 def registerPlayer(name):
     """Adds a player to the tournament database.
@@ -56,8 +53,6 @@ def registerPlayer(name):
     c.execute("INSERT INTO players (full_name) VALUES (%s)", (name,))
     conn.commit()
     conn.close()
-
-# registerPlayer("Nick Drane")
 
 
 def playerStandings():
