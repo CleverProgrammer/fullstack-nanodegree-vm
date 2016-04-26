@@ -53,8 +53,6 @@ def registerPlayer(name):
     conn = connect()
     c = conn.cursor()
     c.execute("INSERT INTO players (full_name) VALUES (%s)", (name,))
-    # c.execute("UPDATE matches INNER JOIN players\
-               # SET matches.matches_id = players.player_id")
     conn.commit()
     conn.close()
 
@@ -82,13 +80,13 @@ def playerStandings():
 def reportMatch(winner, loser):
     """Records the outcome of a single match between two players.
 
-    Args:
+      Args:
       winner:  the id number of the player who won
       loser:  the id number of the player who lost
     """
     conn = connect()
     c = conn.cursor()
-
+    c.execute('insert into matches values(%s, 1), (%s, 0)', (winner, loser))
     conn.commit()
     conn.close()
 
@@ -97,7 +95,7 @@ def swissPairings():
     """Returns a list of pairs of players for the next round of a match.
   
     Assuming that there are an even number of players registered, each player
-    appears exactly once in the pairings.  Each player is paired with another
+    appears exactly once in the pairings. Each player is paired with another
     player with an equal or nearly-equal win record, that is, a player adjacent
     to him or her in the standings.
   

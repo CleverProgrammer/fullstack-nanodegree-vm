@@ -24,10 +24,10 @@ CREATE TABLE matches
 	FOREIGN KEY (match_id) REFERENCES players(player_id)
 );
 
-INSERT INTO players (full_name) VALUES
-	('Rafeh Qazi'),
-	('Tenzin Phuljung'),
-	('Chris Angelico');
+-- INSERT INTO players (full_name) VALUES
+	-- ('Rafeh Qazi'),
+	-- ('Tenzin Phuljung'),
+	-- ('Chris Angelico');
 
 INSERT INTO matches (match_id, result) VALUES
     (1, 0),
