@@ -23,10 +23,9 @@ INSERT INTO players (full_name) VALUES
 
 CREATE TABLE matches
 (
-	match_id	SERIAL REFERENCES players(player_id),
-	rounds		INT,
-	wins		INT,
-	losses		INT
+	match_id	SERIAL PRIMARY KEY NOT NULL,
+	result
+	FOREIGN KEY (match_id) REFERENCES players(player_id)
 	-- FOREIGN KEY (match_id) REFERENCES players(player_id)
 );
 
