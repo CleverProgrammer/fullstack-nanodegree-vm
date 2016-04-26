@@ -26,7 +26,8 @@ CREATE TABLE matches
 
 INSERT INTO players (full_name) VALUES
 	('Rafeh Qazi'),
-	('Tenzin Phuljung');
+	('Tenzin Phuljung'),
+	('Chris Angelico');
 
 INSERT INTO matches (match_id, result) VALUES
     (1, 0),
@@ -48,7 +49,7 @@ SELECT players.player_id, players.full_name,
     COUNT(CASE result WHEN 1 THEN 1 END) AS wins,
     COUNT(matches.match_id) AS rounds
 FROM players
-INNER JOIN matches
+LEFT OUTER JOIN matches
 ON players.player_id = matches.match_id
 GROUP BY players.player_id;
 
