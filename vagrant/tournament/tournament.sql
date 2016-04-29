@@ -66,6 +66,13 @@ select win_standings.id, full_name, wins, matches
 
 select * from standings;
 
+create view final_standings AS
+	select win_standings.id, full_name
+	from rounds
+	left outer join win_standings
+		on rounds.id = win_standings.id
+	order by wins desc;
 
+select * from final_standings;
 
 \c vagrant;

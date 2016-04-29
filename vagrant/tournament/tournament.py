@@ -103,7 +103,7 @@ def swissPairings():
     """
     conn = connect()
     c = conn.cursor()
-    c.execute('select win_standings.id, full_name from standings order by wins;')
+    c.execute('select * from final_standings;')
     return [pair1 + pair2 for pair1, pair2 in zip(c, c)]
 
 
