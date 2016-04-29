@@ -81,7 +81,7 @@ def reportMatch(winner, loser):
     """
     conn = connect()
     c = conn.cursor()
-    c.execute('insert into matches values(%s, 1), (%s, 0)', (winner, loser))
+    c.execute('insert into matches(winner_id, loser_id) values(%s, %s)', (winner, loser))
     conn.commit()
     conn.close()
 
@@ -103,7 +103,7 @@ def swissPairings():
     """
     conn = connect()
     c = conn.cursor()
-    c.execute('select player_id, full_name from standings order by wins;')
+    c.execute('select win_standings.id, full_name from standings order by wins;')
     return [pair1 + pair2 for pair1, pair2 in zip(c, c)]
 
 
