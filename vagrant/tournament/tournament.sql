@@ -9,20 +9,33 @@
 
 DROP DATABASE IF EXISTS tournament;
 CREATE DATABASE tournament;
+\c tournament;
 
 CREATE TABLE players
 (
-	player_id	SERIAL PRIMARY KEY NOT NULL,
+	id	SERIAL PRIMARY KEY NOT NULL,
 	full_name	VARCHAR(255) NOT NULL
 );
 
+insert into players values
+  (1, 'Tenzin'),
+  (2, 'Qazi');
+
 CREATE TABLE matches
 (
-	match_id	INT NOT NULL,
-	result      INT NOT NULL,
-	FOREIGN KEY (match_id) REFERENCES players(player_id)
+	id	        SERIAL PRIMARY KEY NOT NULL,
+	winner      INT NOT NULL,
+	loser       INT NOT NULL,
+	FOREIGN KEY (winner) REFERENCES players(id),
+	FOREIGN KEY (loser) REFERENCES players(id)
 );
 
+insert into matches values
+  (1, 1, 2);
+
+select * from matches;
+
+/*
 CREATE VIEW standings AS
 SELECT 	players.player_id, 
 	players.full_name, 
@@ -32,3 +45,6 @@ FROM players
 LEFT OUTER JOIN matches
 ON players.player_id = matches.match_id
 GROUP BY players.player_id;
+
+select * from standings;
+*/
