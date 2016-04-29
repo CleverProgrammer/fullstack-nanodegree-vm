@@ -19,7 +19,7 @@ CREATE TABLE players
 CREATE TABLE matches
 (
 	match_id	INT NOT NULL,
-	result      	INT NOT NULL,
+	result      INT NOT NULL,
 	FOREIGN KEY (match_id) REFERENCES players(player_id)
 );
 
