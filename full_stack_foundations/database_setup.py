@@ -18,13 +18,30 @@ Base = declarative_base()
 
 # =============== CLASS CODE ==================
 class Restaurant(Base):
+    """
+    Restaurant table using an ORM.
+    """
     __tablename__ = 'restaurant'
-    pass
+    name = Column(String(80), nullable=False)
+    id = Column(Integer, primary_key=True)
 
 class MenuItem(Base):
+    """
+    MenuItem table using an ORM.
+    """
     __tablename__ = 'menu_item'
-    pass
+    name = Column(String(80), nullable=False)
+    id = Column(Integer, primary_key=True)
+    course = Column(String(250))
+    description = Column(String(250))
+    price = Column(String(8))
+    restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
+    restaurant = relationship(Restaurant)
+    def __repr__(self):
+        return "<User(name='%s', id='%s', price='%s')>" % (
+            self.name, self.id, self.price)
 
 
 ### INSERT THE LINE BELOW AT THE END OF THE FILE ###
 engine = create_engine('sqlite:///restaurantmenu.db')
+Base.metadata.create_all(engine)
