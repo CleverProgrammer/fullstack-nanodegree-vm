@@ -18,6 +18,7 @@ for item in items:
 # print(repr(session.query(MenuItem).filter_by(name='Veggie Burgers')))
 # veggie_burgers = session.query(MenuItem).filter_by(name='Veggie Burger')
 iced_tea = session.query(MenuItem).filter_by(id=8).one()
+print(iced_tea)
 print(iced_tea.name)
 print(iced_tea.price)
 iced_tea.price = '$2.99'

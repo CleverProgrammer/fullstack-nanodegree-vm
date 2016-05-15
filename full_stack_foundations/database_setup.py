@@ -7,7 +7,6 @@ Learning about ORM (Object Relational Mapper) in Python
 """
 
 # =========== CONFIGURATION CODE ===============
-import sys
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -37,6 +36,7 @@ class MenuItem(Base):
     price = Column(String(8))
     restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
     restaurant = relationship(Restaurant)
+
     def __repr__(self):
         return "<User(name='%s', id='%s', price='%s')>" % (
             self.name, self.id, self.price)
