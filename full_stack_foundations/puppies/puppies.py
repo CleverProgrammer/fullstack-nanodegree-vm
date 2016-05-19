@@ -31,6 +31,8 @@ class Shelter(Base):
     website = Column(String)
     id = Column(Integer, primary_key=True)
 
+    def __repr__(self):
+        return "<Shelter(name='%s'>" % (self.name)
 
 class Puppy(Base):
     __tablename__ = 'puppy'
@@ -44,8 +46,8 @@ class Puppy(Base):
     shelter = relationship(Shelter)
 
     def __repr__(self):
-        return "<Puppy(name='%s', dateOfBirth='%s', gender='%s')>" % (
-            self.name, self.dateOfBirth, self.gender)
+        return "<Puppy(name='%s', dateOfBirth='%s', gender='%s', weight='%s')>" % (
+            self.name, self.dateOfBirth, self.gender, self.weight)
 
 engine = create_engine('sqlite:///puppyshelter.db')
 Base.metadata.create_all(engine)
