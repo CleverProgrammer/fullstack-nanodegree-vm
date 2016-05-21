@@ -1,4 +1,5 @@
 import cgi
+from urllib.parse import parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 
@@ -13,10 +14,11 @@ class WebserverHandler(BaseHTTPRequestHandler):
                 output += '<html><body>Hello!'
                 output += '<br><a href="/hola">Hola Page</a>'
                 output += "<form method='POST' enctype='multipart/form-data' action='/" \
-                      "hello'><h2> What would you like me to say?</h2><input name='message'" \
-                      " type='text'><input type='submit' value='Submit'></form>"
+                          "hello'><h2> What would you like me to say?</h2><input name='message'" \
+                          " type='text'><input type='submit' value='Submit'></form>"
+                output += '</html></body>'
                 self.wfile.write(bytes(output, 'utf-8'))
-                print(output)
+                print(bytes(output, 'utf-8'))
                 return
 
             elif self.path.endswith('/hola'):
@@ -27,11 +29,11 @@ class WebserverHandler(BaseHTTPRequestHandler):
                 output += '<html><body>Hola&#161'
                 output += "<br><a href='/hello'>Hello Page</a>"
                 output += "<form method='POST' enctype='multipart/form-data' action='/" \
-                      "hello'><h2> What would you like me to say?</h2><input name='message'" \
-                      " type='text'><input type='submit' value='Submit'></form>"
+                          "hello'><h2> What would you like me to say?</h2><input name='message'" \
+                          " type='text'><input type='submit' value='Submit'></form>"
                 output += '</body></html>'
                 self.wfile.write(bytes(output, 'utf-8'))
-                print(output)
+                print(bytes(output, 'utf-8'))
                 return
 
         except IOError:
@@ -39,26 +41,19 @@ class WebserverHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         try:
+            length = int(self.headers['Content-Length'])
             self.send_response(301)
+            self.send_header('Content-type', 'text/html')
             self.end_headers()
-
-            ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
-            if ctype == 'multipart/form-data':
-                fields = cgi.parse_multipart(self.rfile, pdict)
-                messagecontent = fields.get('message')
-
+            post_data = parse_qs(self.rfile.read(length).decode('utf-8'))
+            messagecontent = post_data.get(' name')[0].split('\n')[2]
             output = ''
             output += '<html><body>'
             output += '<h2> Okay, how about this: </h2>'
-            output += '<h1> %s </h1>' % messagecontent[0]
-
-            output += "<form method='POST' enctype='multipart/form-data' action='/" \
-                      "hello'><h2> What would you like me to say?</h2><input name='message'" \
-                      " type='text'><input type='submit' value='Submit'></form>"
+            output += '<h1> %s </h1>' % messagecontent
+            output += "<form method='POST' enctype='multipart/form-data' action='/hello'><h2>What would you like me to say?</h2><input name='message' type='text'><input type='submit' value='Submit'></form>"
             output += '</html></body>'
-            self.wfile.write(output)
-            print(output)
-
+            self.wfile.write(output.encode('utf-8'))
         except:
             pass
 
