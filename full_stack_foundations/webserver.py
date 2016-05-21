@@ -1,6 +1,8 @@
 import cgi
 from urllib.parse import parse_qs
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from run import session
+from database_setup import Restaurant
 
 
 class WebserverHandler(BaseHTTPRequestHandler):
@@ -34,6 +36,16 @@ class WebserverHandler(BaseHTTPRequestHandler):
                 output += '</body></html>'
                 self.wfile.write(bytes(output, 'utf-8'))
                 print(bytes(output, 'utf-8'))
+                return
+
+            elif self.path.endswith('/restaurants'):
+                restaurants = session.query(Restaurant).all()
+                output = ''
+                for restaurant in restaurants:
+                    output += '<h1> {restaurant} <br>'.format(restaurant=restaurant.name)
+                    output += '<a href="/restaurants">Edit</a> <br>'
+                    output += '<a href="/restaurants">Delete</a> </h1> <br><br>'
+                self.wfile.write(bytes(output, 'utf-8'))
                 return
 
         except IOError:
