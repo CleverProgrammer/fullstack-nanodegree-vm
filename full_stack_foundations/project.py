@@ -1,28 +1,23 @@
-from flask import Flask
-from database_setup import Restaurant, Base
+from flask import Flask, Response
+from database_setup import Restaurant, Base, MenuItem
 from run import session
 # from .run import session
 app = Flask(__name__)
 
-engine = create_engine('sqlite:///restaurantmenu.db')
-Base.metadata.bind = engine
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
-
 @app.route('/')
 @app.route('/hello')
 def hello_world():
-    return 'Hello World'
+    restaurant = session.query(Restaurant).first()
+    items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
+    # items = session.query(MenuItem).all()
+    return Response(''.join((item.name+'</br>'+item.price+'</br>'+item.description+'<br><br>' for item in items)))
 
-@app.route('/restaurants')
-def display_restaurants():
-    restaurants = session.query(Restaurant).all()
-    print(restaurants)
-    output = ''
-    for restaurant in restaurants:
-        output += restaurant.name + '<br><br>'
-    print(output)
-    return output
+@app.route('/restaurants/<int:restaurant_id>/')
+def display_restaurants(restaurant_id):
+    # restaurants = session.query(Restaurant).all()
+    restaurant = session.query(Restaurant).get(restaurant_id)
+    # return Response(''.join((restarant.name+'<br><br>' for restaurant in restaurants)))
+    return Response(restaurant.name)
 
 if __name__ == '__main__':
     app.debug = True
