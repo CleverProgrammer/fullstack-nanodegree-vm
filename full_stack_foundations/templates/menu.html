@@ -5,7 +5,11 @@
     <title>FLASK</title>
 </head>
 <body>
-<a href="{{ url_for('new_menu_item', restaurant_id=restaurant.id) }}"><h1>{{ restaurant.name }}</h1></a>
+
+<h1>{{ restaurant.name }}</h1>
+<a href="{{ url_for('new_menu_item', restaurant_id=restaurant.id) }}">Create New Item</a>
+</br></br>
+
 {% for item in items %}
     {{ item.name }}
     </br>
