@@ -9,7 +9,6 @@ app = Flask(__name__)
 def hello_world():
     restaurant = session.query(Restaurant).first()
     items = session.query(MenuItem).filter_by(restaurant_id=restaurant.id)
-    # items = session.query(MenuItem).all()
     return Response(''.join((item.name+'</br>'+item.price+'</br>'+item.description+'<br><br>' for item in items)))
 
 @app.route('/restaurants/<int:restaurant_id>/')
