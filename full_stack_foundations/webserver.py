@@ -34,11 +34,13 @@ class WebserverHandler(BaseHTTPRequestHandler):
                           " type='text'><input type='submit' value='Submit'></form>"
                 output += '</body></html>'
                 self.wfile.write(bytes(output, 'utf-8'))
-                print(bytes(output, 'utf-8'))
                 return
 
             elif self.path.endswith('/restaurants'):
                 restaurants = session.query(Restaurant).all()
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/html')
+                self.end_headers()
                 output = ''
                 for restaurant in restaurants:
                     output += '<h1> {restaurant} <br>'.format(restaurant=restaurant.name)
@@ -48,11 +50,16 @@ class WebserverHandler(BaseHTTPRequestHandler):
                 return
 
             elif self.path.endswith('/restaurants/new'):
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/html')
+                self.end_headers()
                 output = ''
                 output += "<form method='POST' enctype='multipart/form-data' action='/" \
-                          "hello'><h2>Restaurant Name</h2><input name='message'" \
-                          " type='text'><input type='submit' value='Submit'></form>"
-
+                          "hello'><h2>Restaurant Name</h2><input name='restaurant_name'" \
+                          "type='text'>"
+                output += "<input type='submit' value='Submit'></form>"
+                self.wfile.write(bytes(output, 'utf-8'))
+                return
 
         except IOError:
             self.send_error(404, 'File Not Found %s' % self.path)
@@ -61,11 +68,17 @@ class WebserverHandler(BaseHTTPRequestHandler):
         self.send_response(301)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
+        print(self.headers)
         ctype, pdict = cgi.parse_header(self.headers['Content-Type'])
         if ctype == 'multipart/form-data':
             pdict['boundary'] = bytes(pdict['boundary'], 'utf-8')
             fields = cgi.parse_multipart(self.rfile, pdict)
-            messagecontent = fields.get('message')[0].decode('utf-8')
+            messagecontent = fields.get('message', fields.get('restaurant_name'))[0].decode('utf-8')
+            if fields.get('restaurant_name'):
+                session.add(Restaurant(name=messagecontent))
+                session.commit()
+                print('New Restaurant Added!')
+                return
         output = ''
         output += '<html><body>'
         output += '<h2> Okay, how about this: </h2>'
