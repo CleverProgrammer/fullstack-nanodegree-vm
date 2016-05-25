@@ -6,16 +6,16 @@ Learning about ORM (Object Relational Mapper) in Python
 4. Mapper
 """
 
-# =========== CONFIGURATION CODE ===============
+# =========== CONFIGURATION ===============
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 
-
 Base = declarative_base()
 
-# =============== CLASS CODE ==================
+
+# =============== CLASSES ==================
 class Restaurant(Base):
     """
     Restaurant table using an ORM.
@@ -23,6 +23,7 @@ class Restaurant(Base):
     __tablename__ = 'restaurant'
     name = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
+
 
 class MenuItem(Base):
     """
@@ -40,6 +41,17 @@ class MenuItem(Base):
     def __repr__(self):
         return "<User(name='%s', id='%s', price='%s')>" % (
             self.name, self.id, self.price)
+
+    @property
+    def serialize(self):
+        # Returns object data in easily serializeable format
+        return {
+            'name'       : self.name,
+            'description': self.description,
+            'id'         : self.id,
+            'price'      : self.price,
+            'course'     : self.course,
+        }
 
 
 ### INSERT THE LINE BELOW AT THE END OF THE FILE ###

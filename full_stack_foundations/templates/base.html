@@ -13,7 +13,7 @@
     <meta name="robots" content="all">
 
     <link rel="canonical" href="">
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 
 </head>
 
@@ -42,9 +42,9 @@
                         <li>{{ msg }}</li>
                     {% endfor -%}
                 </ul>
-                </div>
             {% endif %}
         {% endwith %}
+    </div>
 </div>
 
 {% block content %}
