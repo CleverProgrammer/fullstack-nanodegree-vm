@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <title>Restaurant App</title>
+
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all">
+
+    <link rel="canonical" href="">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+
+<body lang="en">
+<div id="main" class="container" role="main">
+
+    <!-- ERROR FLASHER !-->
+    <div class="flash">
+        {% with messages = get_flashed_messages(category_filter=['messages']) %}
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li><strong>{{ message }}</strong></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- ERROR FLASHER !-->
+    <div class="flash">
+        {% with errors = get_flashed_messages(category_filter=['error']) %}
+            {% if errors %}
+                <ul>
+                    {%- for msg in errors %}
+                        <li>{{ msg }}</li>
+                    {% endfor -%}
+                </ul>
+                </div>
+            {% endif %}
+        {% endwith %}
+</div>
+
+{% block content %}
+{% endblock %}
+
+</body>
+</html>
